@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>CSS Website Layout</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+.header {
+  background-color: #f1f1f1;
+  padding: 5px;
+  text-align: center;
+}
+
+.column {
+  float: left;
+  padding: 10px;
+}
+
+.column.left {
+  width: 40%;
+  text-align: center;
+}
+
+.column.middle {
+  width: 40%;
+}
+
+.column.right {
+  width: 20%;
+  text-align: center;
+}
+
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+img {
+  width: 100%;
+}
+
+table, th, td {
+  border:1px solid black;
+}
+
+@media screen and (max-width: 600px) {
+  .column.side, .column.middle {
+    width: 100%;
+  }
+}
+
+.footer {
+  background-color: #f1f1f1;
+  padding: 10px;
+  text-align: center;
+}
+
+td, tr,table {
+  border: 1px none #dddddd;
+}
+
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Self Service</h1>
+</div>
+
+<div class="row">
+  
+  
+  <div class="column left">
+    <h2>Camera</h2>
+    <!-- <img src="qrcode.png" alt="HTML5 Icon" width="128" height="128"> -->
+    <!-- <img src="static/qrcode.png" alt="HTML5 Icon" style="width:400px;height:400px;"> -->
+    <img src="{{ url_for('video_feed') }}" width="10%" height="10%">
+
+  </div>
+  
+  <div class="column middle">
+    <h2>Items List</h2>
+    <table style="width:100%">
+      <tr>
+        <td style="font-size:25px;font-weight:bold">Items</td>
+        <td style="text-align:right;font-size:25px;font-weight:bold">Unit</td>
+        <td style="text-align:right;font-size:25px;font-weight:bold">Price</td>
+      </tr>
+      <tr>
+        <td id="item0" style="font-size:25px"></td>
+        <td id = "unit0" style="text-align:right;font-size:25px"></td>
+        <td id = "price0" style="text-align:right;font-size:25px"></td>
+      </tr>
+      <tr>
+        <td id="item1" style="font-size:25px"></td>
+        <td id = "unit1" style="text-align:right;font-size:25px"></td>
+        <td id = "price1" style="text-align:right;font-size:25px"></td>
+      </tr>
+      <tr>
+        <td id="item2" style="font-size:25px"></td>
+        <td id = "unit2" style="text-align:right;font-size:25px"></td>
+        <td id = "price2" style="text-align:right;font-size:25px"></td>
+      </tr>
+      <tr>
+        <td id="item3" style="font-size:25px"></td>
+        <td id = "unit3" style="text-align:right;font-size:25px"></td>
+        <td id = "price3" style="text-align:right;font-size:25px"></td>
+      </tr>
+      <tr>
+        <td id="item4" style="font-size:25px"></td>
+        <td id = "unit4" style="text-align:right;font-size:25px"></td>
+        <td id = "price4" style="text-align:right;font-size:25px"></td>
+      </tr>
+      <tr>
+        <td id="item5" style="font-size:25px"></td>
+        <td id = "unit5" style="text-align:right;font-size:25px"></td>
+        <td id = "price5" style="text-align:right;font-size:25px"></td>
+      </tr>
+      <tr>
+        <td id="item6" style="font-size:25px"></td>
+        <td id = "unit6" style="text-align:right;font-size:25px"></td>
+        <td id = "price6" style="text-align:right;font-size:25px"></td>
+      </tr>
+      <tr>
+        <td id="item7" style="font-size:25px"></td>
+        <td id = "unit7" style="text-align:right;font-size:25px"></td>
+        <td id = "price7" style="text-align:right;font-size:25px"></td>
+      </tr>
+      <tr>
+        <td id="item8" style="font-size:25px"></td>
+        <td id = "unit8" style="text-align:right;font-size:25px"></td>
+        <td id = "price8" style="text-align:right;font-size:25px"></td>
+      </tr>
+      <tr>
+        <td id="item9" style="font-size:25px"></td>
+        <td id = "unit9" style="text-align:right;font-size:25px"></td>
+        <td id = "price9" style="text-align:right;font-size:25px"></td>
+      </tr>
+      <tr>
+        <td id="item10" style="font-size:25px"></td>
+        <td id = "unit10" style="text-align:right;font-size:25px"></td>
+        <td id = "price10" style="text-align:right;font-size:25px"></td>
+      </tr>
+      
+      
+    </table>
+  </div>
+
+  <div class="column right">
+    <h2>QR Payment</h2>
+    <img src="{{ url_for('qr_feed') }}" width="60%" height="60%">
+    <br/><br/><br/><br/>
+    {{status}}
+    <table style="width:100%">
+    <tr>
+      <td id="total" style="text-align:center;font-size:50px;font-weight:bold;color:red"></td>
+    </tr>
+    </table>
+
+  </div>
+
+</div>
+
+<div class="footer">
+
+<p id="clock">Here will be date|time</p>
+<script>
+    var clock = document.getElementById("clock");
+    setInterval(() => {
+
+        fetch("{{ url_for('item_feed') }}").then(response => {response.text().then(t => {total.innerHTML = t.split('//')[0]})});
+
+        fetch("{{ url_for('time_feed') }}").then(response => {response.text().then(t => {clock.innerHTML = t})});
+
+        fetch("{{ url_for('item_feed') }}").then(response => {response.text().then(t => {item0.innerHTML = t.split('//')[1].split('/')[0].split('|')[0]})});
+        fetch("{{ url_for('item_feed') }}").then(response => {response.text().then(t => {unit0.innerHTML = t.split('//')[1].split('/')[0].split('|')[1]})});
+        fetch("{{ url_for('item_feed') }}").then(response => {response.text().then(t => {price0.innerHTML = t.split('//')[1].split('/')[0].split('|')[2]})});
+
+        fetch("{{ url_for('item_feed') }}").then(response => {response.text().then(t => {item1.innerHTML = t.split('//')[1].split('/')[1].split('|')[0]})});
+        fetch("{{ url_for('item_feed') }}").then(response => {response.text().then(t => {unit1.innerHTML = t.split('//')[1].split('/')[1].split('|')[1]})});
+        fetch("{{ url_for('item_feed') }}").then(response => {response.text().then(t => {price1.innerHTML = t.split('//')[1].split('/')[1].split('|')[2]})});
+
+        fetch("{{ url_for('item_feed') }}").then(response => {response.text().then(t => {item2.innerHTML = t.split('//')[1].split('/')[2].split('|')[0]})});
+        fetch("{{ url_for('item_feed') }}").then(response => {response.text().then(t => {unit2.innerHTML = t.split('//')[1].split('/')[2].split('|')[1]})});
+        fetch("{{ url_for('item_feed') }}").then(response => {response.text().then(t => {price2.innerHTML = t.split('//')[1].split('/')[2].split('|')[2]})});
+
+        fetch("{{ url_for('item_feed') }}").then(response => {response.text().then(t => {item3.innerHTML = t.split('//')[1].split('/')[3].split('|')[0]})});
+        fetch("{{ url_for('item_feed') }}").then(response => {response.text().then(t => {unit3.innerHTML = t.split('//')[1].split('/')[3].split('|')[1]})});
+        fetch("{{ url_for('item_feed') }}").then(response => {response.text().then(t => {price3.innerHTML = t.split('//')[1].split('/')[3].split('|')[2]})});
+
+        fetch("{{ url_for('item_feed') }}").then(response => {response.text().then(t => {item4.innerHTML = t.split('//')[1].split('/')[4].split('|')[0]})});
+        fetch("{{ url_for('item_feed') }}").then(response => {response.text().then(t => {unit4.innerHTML = t.split('//')[1].split('/')[4].split('|')[1]})});
+        fetch("{{ url_for('item_feed') }}").then(response => {response.text().then(t => {price4.innerHTML = t.split('//')[1].split('/')[4].split('|')[2]})});
+
+        fetch("{{ url_for('item_feed') }}").then(response => {response.text().then(t => {item4.innerHTML = t.split('//')[1].split('/')[5].split('|')[0]})});
+        fetch("{{ url_for('item_feed') }}").then(response => {response.text().then(t => {unit4.innerHTML = t.split('//')[1].split('/')[5].split('|')[1]})});
+        fetch("{{ url_for('item_feed') }}").then(response => {response.text().then(t => {price4.innerHTML = t.split('//')[1].split('/')[5].split('|')[2]})});
+
+        fetch("{{ url_for('item_feed') }}").then(response => {response.text().then(t => {item4.innerHTML = t.split('//')[1].split('/')[6].split('|')[0]})});
+        fetch("{{ url_for('item_feed') }}").then(response => {response.text().then(t => {unit4.innerHTML = t.split('//')[1].split('/')[6].split('|')[1]})});
+        fetch("{{ url_for('item_feed') }}").then(response => {response.text().then(t => {price4.innerHTML = t.split('//')[1].split('/')[6].split('|')[2]})});
+
+        fetch("{{ url_for('item_feed') }}").then(response => {response.text().then(t => {item4.innerHTML = t.split('//')[1].split('/')[7].split('|')[0]})});
+        fetch("{{ url_for('item_feed') }}").then(response => {response.text().then(t => {unit4.innerHTML = t.split('//')[1].split('/')[7].split('|')[1]})});
+        fetch("{{ url_for('item_feed') }}").then(response => {response.text().then(t => {price4.innerHTML = t.split('//')[1].split('/')[7].split('|')[2]})});
+
+        fetch("{{ url_for('item_feed') }}").then(response => {response.text().then(t => {item4.innerHTML = t.split('//')[1].split('/')[8].split('|')[0]})});
+        fetch("{{ url_for('item_feed') }}").then(response => {response.text().then(t => {unit4.innerHTML = t.split('//')[1].split('/')[8].split('|')[1]})});
+        fetch("{{ url_for('item_feed') }}").then(response => {response.text().then(t => {price4.innerHTML = t.split('//')[1].split('/')[8].split('|')[2]})});
+
+        fetch("{{ url_for('item_feed') }}").then(response => {response.text().then(t => {item4.innerHTML = t.split('//')[1].split('/')[9].split('|')[0]})});
+        fetch("{{ url_for('item_feed') }}").then(response => {response.text().then(t => {unit4.innerHTML = t.split('//')[1].split('/')[9].split('|')[1]})});
+        fetch("{{ url_for('item_feed') }}").then(response => {response.text().then(t => {price4.innerHTML = t.split('//')[1].split('/')[9].split('|')[2]})});
+
+      }, 100); 
+</script>
+
+</div>
+  
+</body>
+</html>
