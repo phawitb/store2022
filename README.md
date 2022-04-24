@@ -11,4 +11,5 @@ sudo python3 get-pip.py
 
 sudo pip3 install flask  
 
-https://forum.level1techs.com/t/debian-9-python3-evdev-not-installable/118253  
+sudo apt-get update
+sudo apt-get install python3-evdev   3time
